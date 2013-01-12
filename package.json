@@ -1,0 +1,35 @@
+{
+  "name": "wscat",
+  "version": "0.0.1",
+  "description": "WebSocket netcat",
+  "main": "index.js",
+  "bin": {
+    "wscat": "./bin/wscat"
+  },
+  "directories": {
+    "lib":     "lib",
+    "example": "examples",
+    "test":    "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moul/wscat"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "keywords": [
+    "WebSocket",
+    "socket.io",
+    "shell",
+    "utils",
+    "netcat"
+  ],
+  "author": "Manfred Touron <m@42.am>",
+  "license": "MIT",
+  "readmeFilename": "README.md"
+}
