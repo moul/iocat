@@ -6,8 +6,7 @@ class Url
     @string = Url.format @obj
     return @
 
-  format: =>
-    Url.format @obj
+  format: => Url.format @obj
 
   @parse: (string) ->
     noprotocol = string.indexOf('://') is -1
@@ -20,8 +19,7 @@ class Url
     obj.protocol = 'wss:' if noprotocol and obj.port is 443
     obj
 
-  @format: (obj) ->
-    url.format obj
+  @format: (obj) -> url.format obj
 
 module.exports =
   Url:     Url
