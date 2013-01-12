@@ -43,11 +43,13 @@ class Program
   initShell: =>
     {Shell} = require './Shell'
     @shell = new Shell
+    do @shell.start
 
   initClient: (destString) =>
     {Client} = require './Client'
-    dest = Url destString
+    dest = new Url destString
     @client = new Client dest
+    do @client.start
 
   initServer: =>
     {Server} = require './Server'
@@ -56,6 +58,25 @@ class Program
   runClient: (destString) =>
     do @initShell
     @initClient destString
+    @shell.on 'line', (d) =>
+      @client.write "#{d}\n"
+    @client.on 'data', (d) =>
+      do @client.stdin.pause
+      @client.stdout.srite d
+      do @client.stdin.resume
+    @client.on 'close', =>
+      console.log 'client.on close'
+      do @client.stdin.pause
+      @shell.write "\nconnection closed by foreign host."
+      do @shell.close
+      @shell.exit 0
+    @shell.on 'SIGINT', =>
+      console.log 'shell.on SIGINT'
+      do @shell.stdin.pause
+      @shell.write "\nending session"
+      do @shell.close
+      do @client.end
+      @shell.exit 0
 
   runServer: =>
     do @initShell
