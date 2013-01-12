@@ -6,8 +6,10 @@ class Shell
     @options.output ?= process.stdout
     return @
 
-  start: ->
-    @rl = readline.createInterface @options
+  start: =>
+    @rl =   readline.createInterface @options
+    @on =   @rl.on
+    @emit = @rl.emit
 
 module.exports =
   Shell: Shell
