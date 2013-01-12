@@ -58,18 +58,26 @@ class Program
   runClient: (destString) =>
     do @initShell
     @initClient destString
+
     @shell.on 'line', (d) =>
       @client.write "#{d}\n"
+
+    @client.on 'error', (err) =>
+      console.log 'client.on error'
+      @shell.exit 0
+
     @client.on 'data', (d) =>
       do @client.stdin.pause
       @client.stdout.srite d
       do @client.stdin.resume
+
     @client.on 'close', =>
       console.log 'client.on close'
       do @client.stdin.pause
       @shell.write "\nconnection closed by foreign host."
       do @shell.close
       @shell.exit 0
+
     @shell.on 'SIGINT', =>
       console.log 'shell.on SIGINT'
       do @shell.stdin.pause

@@ -11,5 +11,9 @@ class Shell
     @on =   @rl.on
     @emit = @rl.emit
 
+  exit: (code) =>
+    console.log 'Shell.exit:', code
+    process.exit code
+
 module.exports =
   Shell: Shell
