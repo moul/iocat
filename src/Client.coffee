@@ -1,14 +1,12 @@
-#io = require 'socket.io-client'
-#websocket = require 'websocket-stream'
-{EventEmitter} = require 'events'
-ws = require 'ws'
+{Base} = require './Base'
+ws =     require 'ws'
 
-class Client extends EventEmitter
+class Client extends Base
   constructor: (@url, @options = {}) ->
     return @
 
   start: =>
-    console.log 'Client: url->', @url.format()
+    @log 'Client: url->', @url.format()
 
     href = @url.format()
     @ws = new ws @url.format()
@@ -18,34 +16,35 @@ class Client extends EventEmitter
     @ws.on 'message', @onMessage
     @ws.on 'connect', @onConnect
 
+
   # Methods
   send: (d) =>
-    console.log 'Client.send', d
+    @log 'Client.send', d
     @ws.send d
 
   end: =>
-    console.log 'Client.end'
+    @log 'Client.end'
     do @ws.close
 
   # Events
   onConnect: =>
-    console.log 'Client.onConnect'
+    @log 'Client.onConnect'
     @emit 'connect'
 
   onOpen: =>
-    console.log 'Client.onOpen'
+    @log 'Client.onOpen'
     @emit 'open'
 
   onClose: =>
-    console.log 'Client.onClose'
+    @log 'Client.onClose'
     @emit 'close'
 
   onError: (err) =>
-    console.log 'Client.onError', err
+    @log 'Client.onError', err
     @emit 'error', err
 
   onMessage: (msg) =>
-    console.log 'Client.onMessage', msg
+    @log 'Client.onMessage', msg
     @emit 'message', msg
 
 module.exports =

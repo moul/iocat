@@ -1,7 +1,7 @@
-{EventEmitter} = require 'events'
+{Base}   = require './Base'
 readline = require 'readline'
 
-class Shell extends EventEmitter
+class Shell extends Base
   constructor: (@options = {}) ->
     @options.input  ?= process.stdin
     @options.output ?= process.stdout
@@ -15,22 +15,23 @@ class Shell extends EventEmitter
     @rl.on 'SIGINT', @onSigint
 
   onLine: (d) =>
-    console.log 'Shell.onLine', d
+    @log 'Shell.onLine', d
     @emit 'line', d
 
   onSigint: =>
-    console.log 'Shell.onSigint'
+    @log 'Shell.onSigint'
     @emit 'SIGINT'
 
   exit: (code) =>
-    console.log 'Shell.exit:', code
+    @log 'Shell.exit:', code
     process.exit code
 
-  write: (str) =>
-    console.log 'Shell.write', str
+  send: (d) =>
+    @log 'Shell.write', d
+    console.log d
 
   close: =>
-    console.log 'Shell.close'
+    @log 'Shell.close'
 
 module.exports =
   Shell: Shell

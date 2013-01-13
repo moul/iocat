@@ -1,7 +1,7 @@
-{EventEmitter} = require 'events'
-ws = require 'ws'
+{Base} = require './Base'
+ws =     require 'ws'
 
-class Server extends EventEmitter
+class Server extends Base
   constructor: (@options = {}) ->
     @options.port ?= @options.localPort
     return @
@@ -15,20 +15,20 @@ class Server extends EventEmitter
 
   # Methods
   send: (d) =>
-    console.log 'Server.send', d
+    @log 'send', d
     @ws.send d
 
   end: =>
-    console.log 'Server.end'
+    @log 'end'
     do @ws.close
 
   # Server Events
   onServerListening: =>
-    console.log 'onListening'
+    @log  'onServerListening'
     @emit 'listening'
 
   onServerConnection: (ws) =>
-    console.log 'onConnection'
+    @log  'onServerConnection'
     @emit 'connection'
     @ws = ws
     @ws.on 'open',       @onClientOpen
@@ -38,28 +38,28 @@ class Server extends EventEmitter
     @ws.on 'connect',    @onClientConnect
 
   onServerError: (err) =>
-    console.log 'onError', err
+    @log  'onServerError', err
     @emit 'error', err
 
   # Client Events
   onClientConnect: =>
-    console.log 'onConnect'
+    @log  'onClientConnect'
     @emit 'connect'
 
   onClientOpen: =>
-    console.log 'onOpen'
+    @log  'onClientOpen'
     @emit 'open'
 
   onClientClose: =>
-    console.log 'onClose'
+    @log  'onClientClose'
     @emit 'close'
 
   onClientError: (err) =>
-    console.log 'onError', err
+    @log  'onClientError', err
     @emit 'error', err
 
   onClientMessage: (msg) =>
-    console.log 'onMessage', msg
+    @log  'onClientMessage', msg
     @emit 'message', msg
 
 module.exports =

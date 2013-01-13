@@ -72,17 +72,20 @@ class Program
       @shell.send d
       do @shell.stdin.resume
 
+    @client.on 'message', (d) =>
+      @shell.send d
+
     @client.on 'close', =>
       console.log 'client.on close'
       do @shell.stdin.pause
-      @shell.write "\nconnection closed by foreign host."
+      @shell.send "\nconnection closed by foreign host."
       do @shell.close
       @shell.exit 0
 
     @shell.on 'SIGINT', =>
       console.log 'shell.on SIGINT'
       do @shell.stdin.pause
-      @shell.write "\nending session"
+      @shell.send "\nending session"
       do @shell.close
       do @client.end
       @shell.exit 0
@@ -98,22 +101,20 @@ class Program
       console.log 'server.on error'
       @shell.exit 0
 
-    @server.on 'data', (d) =>
-      do @shell.stdin.pause
+    @server.on 'message', (d) =>
       @shell.send d
-      do @shell.stdin.resume
 
     @server.on 'close', =>
       console.log 'server.on close'
       do @shell.stdin.pause
-      @shell.write "\nconnection closed by foreign host."
+      @shell.send "\nconnection closed by foreign host."
       do @shell.close
       @shell.exit 0
 
     @shell.on 'SIGINT', =>
       console.log 'shell.on SIGINT'
       do @shell.stdin.pause
-      @shell.write "\nending session"
+      @shell.send "\nending session"
       do @shell.close
       do @server.end
       @shell.exit 0
