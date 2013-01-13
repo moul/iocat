@@ -15,6 +15,7 @@ class Program
       .usage('[options] URL')
       .option('-v, --verbose',                             'verbose')
       .option('-l, --listen',                              'Start in listen mode, creating a server')
+      .option('-p, --local-port <port>',                   'Specify local port for remote conntects',                 parseInt)
       #.option('-U, --use-unix-domain-socket',              'Use UNIX domain socket')
       #.option('-X, --proxy-protocol {socks[45],connect}',  'proxy protocol')
       #.option('-b, --bind-interface <if>',                 'Bind socket to interface')                                #checkInterface
@@ -25,7 +26,6 @@ class Program
       #.option('-m, --text-mode {text,binary,auto}',        'Specify the message transmit mode (default: auto)')
       #.option('-n, --new-lines',                           'Separate each received message with a newline')
       #.option('-n, --no-name-resolution',                  'Suppress name/port resolutions')
-      #.option('-p, --local-port <port>',                   'Specify local port for remote conntects',                 parseInt)
       #.option('-q, --quit-on-eof <secs>',                  'Quit after EOF on stdin and delay of secs (0 allowed)',   parseFloat)
       #.option('-r, --randomize-local-port',                'Randomize local port')
       #.option('-s, --local-source-address <addr>',         'Local source address')
@@ -48,32 +48,33 @@ class Program
   initClient: (destString) =>
     {Client} = require './Client'
     dest = new Url destString
-    @client = new Client dest
+    @client = new Client dest, @options
     do @client.start
 
   initServer: =>
     {Server} = require './Server'
-    @server = new Server
+    @server = new Server @options
+    do @server.start
 
   runClient: (destString) =>
     do @initShell
     @initClient destString
 
     @shell.on 'line', (d) =>
-      @client.write "#{d}\n"
+      @client.send d
 
     @client.on 'error', (err) =>
       console.log 'client.on error'
       @shell.exit 0
 
     @client.on 'data', (d) =>
-      do @client.stdin.pause
-      @client.stdout.srite d
-      do @client.stdin.resume
+      do @shell.stdin.pause
+      @shell.send d
+      do @shell.stdin.resume
 
     @client.on 'close', =>
       console.log 'client.on close'
-      do @client.stdin.pause
+      do @shell.stdin.pause
       @shell.write "\nconnection closed by foreign host."
       do @shell.close
       @shell.exit 0
@@ -96,7 +97,7 @@ class Program
     if @options.args?.length is 1
       @runClient @options.args[0]
     else if @options.listen
-      @runServer
+      do @runServer
     else
       do program.help
 

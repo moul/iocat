@@ -7,8 +7,6 @@ class Client extends EventEmitter
   constructor: (@url, @options = {}) ->
     return @
 
-  #on: (event, fn) => console.log 'on', event
-
   start: =>
     console.log 'Client: url->', @url.format()
 
@@ -19,35 +17,36 @@ class Client extends EventEmitter
     @ws.on 'error',   @onError
     @ws.on 'message', @onMessage
     @ws.on 'connect', @onConnect
-    return
 
+  # Methods
+  send: (d) =>
+    console.log 'Client.send', d
+    @ws.send d
+
+  end: =>
+    console.log 'Client.end'
+    do @ws.close
+
+  # Events
   onConnect: =>
-    console.log 'onConnect'
+    console.log 'Client.onConnect'
+    @emit 'connect'
 
   onOpen: =>
-    console.log 'onOpen'
+    console.log 'Client.onOpen'
+    @emit 'open'
 
   onClose: =>
-    console.log 'onClose'
+    console.log 'Client.onClose'
+    @emit 'close'
 
   onError: (err) =>
-    console.log 'onError', err
+    console.log 'Client.onError', err
     @emit 'error', err
 
-  onMessage: =>
-    console.log 'onMessage'
-
-#    console.log 'test'
-#    console.log @ws
-#    @ws.on 'data', (buf) -> console.log 'test'
-#    @ws.
-    #@on = @ws.on
-    #@io =   io.connect @url.format()
-
-    #@io.on 'data', (buf) -> console.log buf
-
-    #@on =   @io.on
-    #@emit = @io.emit
+  onMessage: (msg) =>
+    console.log 'Client.onMessage', msg
+    @emit 'message', msg
 
 module.exports =
   Client: Client
