@@ -91,6 +91,33 @@ class Program
     do @initShell
     do @initServer
 
+    @shell.on 'line', (d) =>
+      @server.send d
+
+    @server.on 'error', (err) =>
+      console.log 'server.on error'
+      @shell.exit 0
+
+    @server.on 'data', (d) =>
+      do @shell.stdin.pause
+      @shell.send d
+      do @shell.stdin.resume
+
+    @server.on 'close', =>
+      console.log 'server.on close'
+      do @shell.stdin.pause
+      @shell.write "\nconnection closed by foreign host."
+      do @shell.close
+      @shell.exit 0
+
+    @shell.on 'SIGINT', =>
+      console.log 'shell.on SIGINT'
+      do @shell.stdin.pause
+      @shell.write "\nending session"
+      do @shell.close
+      do @server.end
+      @shell.exit 0
+
   run: =>
     do @parseOptions
 

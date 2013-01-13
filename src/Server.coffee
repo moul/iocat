@@ -6,8 +6,6 @@ class Server extends EventEmitter
     @options.port ?= @options.localPort
     return @
 
-  #on: (event, fn) => console.log 'on', event
-
   start: =>
     @wss = new ws.Server  @options
 
@@ -15,6 +13,16 @@ class Server extends EventEmitter
     @wss.on 'connection', @onServerConnection
     @wss.on 'error',      @onServerError
 
+  # Methods
+  send: (d) =>
+    console.log 'Server.send', d
+    @ws.send d
+
+  end: =>
+    console.log 'Server.end'
+    do @ws.close
+
+  # Server Events
   onServerListening: =>
     console.log 'onListening'
     @emit 'listening'
@@ -33,6 +41,7 @@ class Server extends EventEmitter
     console.log 'onError', err
     @emit 'error', err
 
+  # Client Events
   onClientConnect: =>
     console.log 'onConnect'
     @emit 'connect'
