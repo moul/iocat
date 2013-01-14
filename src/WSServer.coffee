@@ -1,7 +1,7 @@
 {Base} = require './Base'
 ws =     require 'ws'
 
-class Server extends Base
+class WSServer extends Base
   constructor: (@options = {}) ->
     @options.port ?= @options.localPort
     return @
@@ -9,9 +9,9 @@ class Server extends Base
   start: =>
     @wss = new ws.Server  @options
 
-    @wss.on 'listening',  @onServerListening
-    @wss.on 'connection', @onServerConnection
-    @wss.on 'error',      @onServerError
+    @wss.on 'listening',  @onWSServerListening
+    @wss.on 'connection', @onWSServerConnection
+    @wss.on 'error',      @onWSServerError
 
   # Methods
   send: (d) =>
@@ -22,13 +22,13 @@ class Server extends Base
     @log 'end'
     do @ws.close
 
-  # Server Events
-  onServerListening: =>
-    @log  'onServerListening'
+  # WSServer Events
+  onWSServerListening: =>
+    @log  'onWSServerListening'
     @emit 'listening'
 
-  onServerConnection: (ws) =>
-    @log  'onServerConnection'
+  onWSServerConnection: (ws) =>
+    @log  'onWSServerConnection'
     @emit 'connection'
     @ws = ws
     @ws.on 'open',       @onClientOpen
@@ -37,8 +37,8 @@ class Server extends Base
     @ws.on 'message',    @onClientMessage
     @ws.on 'connect',    @onClientConnect
 
-  onServerError: (err) =>
-    @log  'onServerError', err
+  onWSServerError: (err) =>
+    @log  'onWSServerError', err
     @emit 'error', err
 
   # Client Events
@@ -63,4 +63,4 @@ class Server extends Base
     @emit 'message', msg
 
 module.exports =
-  Server: Server
+  WSServer: WSServer

@@ -45,20 +45,20 @@ class Program
     @shell = new Shell
     do @shell.start
 
-  initClient: (destString) =>
-    {Client} = require './Client'
+  initWSClient: (destString) =>
+    {WSClient} = require './WSClient'
     dest = new Url destString
-    @client = new Client dest, @options
+    @client = new WSClient dest, @options
     do @client.start
 
-  initServer: =>
-    {Server} = require './Server'
-    @server = new Server @options
+  initWSServer: =>
+    {WSServer} = require './WSServer'
+    @server = new WSServer @options
     do @server.start
 
   runClient: (destString) =>
     do @initShell
-    @initClient destString
+    @initWSClient destString
 
     @shell.on 'line', (d) =>
       @client.send d
@@ -92,7 +92,7 @@ class Program
 
   runServer: =>
     do @initShell
-    do @initServer
+    do @initWSServer
 
     @shell.on 'line', (d) =>
       @server.send d
