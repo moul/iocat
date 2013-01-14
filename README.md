@@ -23,16 +23,30 @@ Usage
 Example
 -------
 
-Server
+WebSocket Server
 ```bash
 # wscat -l -p 3050
 > Hello !
 < Hi !
 ```
 
-Client
+WebSocket Client
 ```bash
 # wscat ws://127.0.0.1:3050
+< Hello !
+> Hi !
+```
+
+Socket.IO Server
+```bash
+# wscat --socketio -l -p 3050
+> Hello !
+< Hi !
+```
+
+Socket.IO Client
+```bash
+# wscat --socketio ws://127.0.0.1:3050
 < Hello !
 > Hi !
 ```
