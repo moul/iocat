@@ -16,6 +16,7 @@ class Program
       .option('-v, --verbose',                             'verbose')
       .option('-l, --listen',                              'Start in listen mode, creating a server')
       .option('-p, --local-port <port>',                   'Specify local port for remote conntects',                 parseInt)
+      .option('--socketio',                                'Use socket.io')
       #.option('-U, --use-unix-domain-socket',              'Use UNIX domain socket')
       #.option('-X, --proxy-protocol {socks[45],connect}',  'proxy protocol')
       #.option('-b, --bind-interface <if>',                 'Bind socket to interface')                                #checkInterface
@@ -51,14 +52,25 @@ class Program
     @client = new WSClient dest, @options
     do @client.start
 
+  initSIOClient: (destString) =>
+    {SIOClient} = require './SIOClient'
+    dest = new Url destString
+    @client = new SIOClient dest, @options
+    do @client.start
+
   initWSServer: =>
     {WSServer} = require './WSServer'
     @server = new WSServer @options
     do @server.start
 
+  initSIOServer: =>
+    {SIOServer} = require './SIOServer'
+    @server = new SIOServer @options
+    do @server.start
+
   runClient: (destString) =>
     do @initShell
-    @initWSClient destString
+    if @options.socketio then @initSIOClient destString else @initWSClient destString
 
     @shell.on 'line', (d) =>
       @client.send d
@@ -92,7 +104,7 @@ class Program
 
   runServer: =>
     do @initShell
-    do @initWSServer
+    if @options.socketio then do @initSIOServer else do @initWSServer
 
     @shell.on 'line', (d) =>
       @server.send d
