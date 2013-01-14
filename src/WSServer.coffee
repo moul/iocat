@@ -3,10 +3,12 @@ ws =     require 'ws'
 
 class WSServer extends Base
   constructor: (@options = {}) ->
+    @log 'constructor'
     @options.port ?= @options.localPort
     return @
 
   start: =>
+    @log 'start'
     @wss = new ws.Server  @options
 
     @wss.on 'listening',  @onWSServerListening

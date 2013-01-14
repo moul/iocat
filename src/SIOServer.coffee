@@ -5,9 +5,11 @@ class SIOServer extends Base
   constructor: (@options = {}) ->
     @options.port ?= @options.localPort
     @options.log   = !!@options.verbose
+    @log 'SIOServer.constructor'
     return @
 
   start: =>
+    @log 'start'
     @sio = io.listen @options.port, @options
 
     @sio.set    'log', false
@@ -15,7 +17,8 @@ class SIOServer extends Base
     @sio.enable 'browser client etag'
     @sio.enable 'browser client gzip'
 
-    @sio.sockets.on 'listening',  @onSIOServerListening
+    #@sio.sockets.on 'listening',  @onSIOServerListening
+    #@sio.sockets.on 'disconnect', @onSIOServerDisconnect
     @sio.sockets.on 'connection', @onSIOServerConnection
     @sio.sockets.on 'error',      @onSIOServerError
 
@@ -32,6 +35,10 @@ class SIOServer extends Base
   onSIOServerListening: =>
     @log  'onSIOServerListening'
     @emit 'listening'
+
+  onSIOServerDisconnect: =>
+    @log  'onSIOServerDisconnect'
+    @emit 'disconnect'
 
   onSIOServerConnection: (ws) =>
     @log  'onSIOServerConnection'

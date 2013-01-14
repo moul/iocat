@@ -19,32 +19,32 @@ class SIOClient extends Base
 
   # Methods
   send: (d) =>
-    @log 'SIOClient.send', d
+    @log 'send', d
     @io.send d
 
   end: =>
-    @log 'SIOClient.end'
+    @log 'end'
     do @io.disconnect
 
   # Events
   onConnect: =>
-    @log 'SIOClient.onConnect'
+    @log 'onConnect'
     @emit 'connect'
 
   onOpen: =>
-    @log 'SIOClient.onOpen'
+    @log 'onOpen'
     @emit 'open'
 
   onClose: =>
-    @log 'SIOClient.onClose'
+    @log 'onClose'
     @emit 'close'
 
   onError: (err) =>
-    @log 'SIOClient.onError', err
+    @log 'onError', err
     @emit 'error', err
 
   onMessage: (msg) =>
-    @log 'SIOClient.onMessage', msg
+    @log 'onMessage', msg
     @emit 'message', msg
 
 module.exports =

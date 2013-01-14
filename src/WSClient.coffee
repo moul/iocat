@@ -3,6 +3,7 @@ ws =     require 'ws'
 
 class WSClient extends Base
   constructor: (@url, @options = {}) ->
+    @log "constructor"
     return @
 
   start: =>
@@ -19,32 +20,32 @@ class WSClient extends Base
 
   # Methods
   send: (d) =>
-    @log 'WSClient.send', d
+    @log 'send', d
     @ws.send d
 
   end: =>
-    @log 'WSClient.end'
+    @log 'end'
     do @ws.close
 
   # Events
   onConnect: =>
-    @log 'WSClient.onConnect'
+    @log 'onConnect'
     @emit 'connect'
 
   onOpen: =>
-    @log 'WSClient.onOpen'
+    @log 'onOpen'
     @emit 'open'
 
   onClose: =>
-    @log 'WSClient.onClose'
+    @log 'onClose'
     @emit 'close'
 
   onError: (err) =>
-    @log 'WSClient.onError', err
+    @log 'onError', err
     @emit 'error', err
 
   onMessage: (msg) =>
-    @log 'WSClient.onMessage', msg
+    @log 'onMessage', msg
     @emit 'message', msg
 
 module.exports =

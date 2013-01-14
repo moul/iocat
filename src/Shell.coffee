@@ -15,23 +15,23 @@ class Shell extends Base
     @rl.on 'SIGINT', @onSigint
 
   onLine: (d) =>
-    @log 'Shell.onLine', d
+    @log 'onLine', d
     @emit 'line', d
 
   onSigint: =>
-    @log 'Shell.onSigint'
+    @log 'onSigint'
     @emit 'SIGINT'
 
   exit: (code) =>
-    @log 'Shell.exit:', code
+    @log 'exit:', code
     process.exit code
 
   send: (d) =>
-    @log 'Shell.write', d
+    @log 'write', d
     console.log d
 
   close: =>
-    @log 'Shell.close'
+    @log 'close'
 
 module.exports =
   Shell: Shell
