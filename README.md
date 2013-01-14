@@ -1,15 +1,15 @@
-wscat
+iocat
 =====
 
-A WebSocket netcat-like utility.
+A Socket.IO and WebSocket netcat-like utility.
 
-An alternative to the built-in `wscat` binary, packaged with [ws](http://einaros.github.com/ws/).
+The WebSocket part is an alternative to the built-in `wscat` binary, packaged with [ws](http://einaros.github.com/ws/).
 
 Usage
 -----
 
 ```
-  Usage: wscat [options] URL
+  Usage: iocat [options] URL
 
   Options:
 
@@ -18,6 +18,8 @@ Usage
     -v, --verbose            verbose
     -l, --listen             Start in listen mode, creating a server
     -p, --local-port <port>  Specify local port for remote conntects
+    --socketio               Use socket.io
+    -k, --keep-listen        Keep inbound sockets open for multiple connects
 ```
 
 Example
