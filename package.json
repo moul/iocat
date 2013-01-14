@@ -1,10 +1,10 @@
 {
-  "name": "wscat",
-  "version": "0.0.1",
-  "description": "WebSocket netcat",
+  "name": "iocat",
+  "version": "0.0.2",
+  "description": "WebSocket netcat with Socket.io support",
   "main": "index.js",
   "bin": {
-    "wscat": "./bin/wscat"
+    "wscat": "./bin/iocat"
   },
   "directories": {
     "lib":     "lib",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/moul/wscat"
+    "url": "https://github.com/moul/iocat"
   },
   "dependencies": {
   },
