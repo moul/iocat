@@ -5,7 +5,7 @@ class Shell extends Base
   constructor: (@options = {}) ->
     @options.input  ?= process.stdin
     @options.output ?= process.stdout
-    @stdin = process.stdin
+    @stdin =  process.stdin
     @stdout = process.stdout
     return @
 
