@@ -4,23 +4,29 @@ io =     require 'socket.io'
 class SIOServer extends Base
   constructor: (@options = {}) ->
     @options.port ?= @options.localPort
+    @options.log   = !!@options.verbose
     return @
 
   start: =>
-    @io = io.listen @options.port
+    @sio = io.listen @options.port, @options
 
-    @io.sockets.on 'listening',  @onSIOServerListening
-    @io.sockets.on 'connection', @onSIOServerConnection
-    @io.sockets.on 'error',      @onSIOServerError
+    @sio.set    'log', false
+    @sio.enable 'browser client mignification'
+    @sio.enable 'browser client etag'
+    @sio.enable 'browser client gzip'
+
+    @sio.sockets.on 'listening',  @onSIOServerListening
+    @sio.sockets.on 'connection', @onSIOServerConnection
+    @sio.sockets.on 'error',      @onSIOServerError
 
   # Methods
   send: (d) =>
     @log 'send', d
-    @ws.send d
+    @ioc.send d
 
   end: =>
     @log 'end'
-    do @ws.close
+    do @ioc.disconnect
 
   # SIOServer Events
   onSIOServerListening: =>
@@ -30,12 +36,13 @@ class SIOServer extends Base
   onSIOServerConnection: (ws) =>
     @log  'onSIOServerConnection'
     @emit 'connection'
-    @ws = ws
-    @ws.on 'open',       @onClientOpen
-    @ws.on 'close',      @onClientClose
-    @ws.on 'error',      @onClientError
-    @ws.on 'message',    @onClientMessage
-    @ws.on 'connect',    @onClientConnect
+    @ioc = ws
+    @ioc.on 'open',       @onClientOpen
+    @ioc.on 'close',      @onClientClose
+    @ioc.on 'error',      @onClientError
+    @ioc.on 'message',    @onClientMessage
+    @ioc.on 'connect',    @onClientConnect
+    @ioc.on 'disconnect', @onClientDisonnect
 
   onSIOServerError: (err) =>
     @log  'onSIOServerError', err
@@ -45,6 +52,10 @@ class SIOServer extends Base
   onClientConnect: =>
     @log  'onClientConnect'
     @emit 'connect'
+
+  onClientDisonnect: =>
+    @log  'onClientDisonnect'
+    @emit 'disconnect'
 
   onClientOpen: =>
     @log  'onClientOpen'

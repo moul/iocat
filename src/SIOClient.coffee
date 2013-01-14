@@ -24,7 +24,7 @@ class SIOClient extends Base
 
   end: =>
     @log 'SIOClient.end'
-    do @io.close
+    do @io.disconnect
 
   # Events
   onConnect: =>
