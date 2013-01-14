@@ -4,6 +4,7 @@ ws =     require 'ws'
 class WSServer extends Base
   constructor: (@options = {}) ->
     @log 'constructor'
+    @_queue = []
     @options.port ?= @options.localPort
     return @
 
@@ -15,29 +16,46 @@ class WSServer extends Base
     @wss.on 'connection', @onWSServerConnection
     @wss.on 'error',      @onWSServerError
 
-  # Methods
-  send: (d) =>
-    @log 'send', d
-    @ws.send d
+  isActive: =>
+    @wss? and @ws? and @ready
 
-  end: =>
+  _enqueue: (data) =>
+    @_queue.push data
+
+  # Methods
+  send: (data) =>
+    unless do @isActive
+      @_enqueue data
+    else
+      @log 'send', data
+      @ws.send data
+
+  end: (fn = null) =>
     @log 'end'
-    do @ws.close
+    do @ws.close if do @isActive
+    @wss = null
+    @ws = null
+    @ready = false
+    do fn if fn
 
   # WSServer Events
   onWSServerListening: =>
     @log  'onWSServerListening'
     @emit 'listening'
 
-  onWSServerConnection: (ws) =>
+  onWSServerConnection: (socket) =>
+    #console.dir socket
     @log  'onWSServerConnection'
     @emit 'connection'
-    @ws = ws
+    @ws = socket
     @ws.on 'open',       @onClientOpen
     @ws.on 'close',      @onClientClose
     @ws.on 'error',      @onClientError
     @ws.on 'message',    @onClientMessage
     @ws.on 'connect',    @onClientConnect
+    @ready = true
+    for data in @_queue
+      @send data
 
   onWSServerError: (err) =>
     @log  'onWSServerError', err

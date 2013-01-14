@@ -17,7 +17,6 @@ class WSClient extends Base
     @ws.on 'message', @onMessage
     @ws.on 'connect', @onConnect
 
-
   # Methods
   send: (d) =>
     @log 'send', d

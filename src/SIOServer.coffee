@@ -6,6 +6,7 @@ class SIOServer extends Base
     @options.port ?= @options.localPort
     @options.log   = !!@options.verbose
     @log 'constructor'
+    @_queue = []
     return @
 
   start: (fn = null) =>
@@ -34,11 +35,17 @@ class SIOServer extends Base
     @sio.sockets.on 'error',      @onSIOServerError
     do fn if fn
 
+  _enqueue: (data) =>
+    @_queue.push data
+
   # Methods
   send: (data, fn = null) =>
-    @log 'send', data
-    @ioc.send data
-    do fn if fn
+    unless do @isActive
+      @_enqueue data
+    else
+      @log 'send', data
+      @ioc.send data
+      do fn if fn
 
   end: (fn = null) =>
     @log 'end'
@@ -73,6 +80,8 @@ class SIOServer extends Base
     @ioc.on 'connect',    @onClientConnect
     @ioc.on 'disconnect', @onClientDisonnect
     @ready = true
+    for data in @_queue
+      @send data
     @emit 'ready'
 
   onSIOServerError: (err) =>

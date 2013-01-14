@@ -17,13 +17,13 @@ class Program
       .option('-l, --listen',                              'Start in listen mode, creating a server')
       .option('-p, --local-port <port>',                   'Specify local port for remote conntects',                 parseInt)
       .option('--socketio',                                'Use socket.io')
+      .option('-k, --keep-listen',                         'Keep inbound sockets open for multiple connects')
       #.option('-U, --use-unix-domain-socket',              'Use UNIX domain socket')
       #.option('-X, --proxy-protocol {socks[45],connect}',  'proxy protocol')
       #.option('-b, --bind-interface <if>',                 'Bind socket to interface')                                #checkInterface
       #.option('-c, --send-crlf',                           'Send CRLF as line-ending')
       #.option('-d, --detach-stdin',                        'Detach from stdin')
       #.option('-i, --interval <secs>',                     'Delay interval for lines sent, ports scanned',            parseFloat)
-      #.option('-k, --keep-listen',                         'Keep inbound sockets open for multiple connects')
       #.option('-m, --text-mode {text,binary,auto}',        'Specify the message transmit mode (default: auto)')
       #.option('-n, --new-lines',                           'Separate each received message with a newline')
       #.option('-n, --no-name-resolution',                  'Suppress name/port resolutions')
@@ -94,6 +94,9 @@ class Program
       do @shell.close
       @shell.exit 0
 
+    @client.on 'open', =>
+      @shell.send "Connection to #{destString} succeeded!"
+
     @shell.on 'SIGINT', =>
       console.log 'shell.on SIGINT'
       do @shell.stdin.pause
@@ -116,12 +119,15 @@ class Program
     @server.on 'message', (d) =>
       @shell.send d
 
+    @server.on 'connection', =>
+      console.log 'New connection'
+
     @server.on 'close', =>
-      console.log 'server.on close'
       do @shell.stdin.pause
       @shell.send "\nconnection closed by foreign host."
-      do @shell.close
-      @shell.exit 0
+      unless @options.keepListen
+        do @shell.close
+        @shell.exit 0
 
     @shell.on 'SIGINT', =>
       console.log 'shell.on SIGINT'
