@@ -12,7 +12,12 @@ class Shell extends Base
   start: =>
     @rl =   readline.createInterface @options
     @rl.on 'line',   @onLine
-    @rl.on 'SIGINT', @onSigint
+    @rl.on 'SIGINT', @onSigint # ^C
+    #@rl.on 'SIGTSTP',          # ^Z
+    #@rl.on 'SIGCONT',          # fg after ^Z
+    #@rl.on 'close',
+    #@rl.on 'pause',
+    #@rl.on 'resume',
     do @rl.prompt
 
   onLine: (d) =>
