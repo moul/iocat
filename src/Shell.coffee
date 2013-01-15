@@ -13,10 +13,12 @@ class Shell extends Base
     @rl =   readline.createInterface @options
     @rl.on 'line',   @onLine
     @rl.on 'SIGINT', @onSigint
+    do @rl.prompt
 
   onLine: (d) =>
     @log 'onLine', d
     @emit 'line', d
+    do @rl.prompt
 
   onSigint: =>
     @log 'onSigint'

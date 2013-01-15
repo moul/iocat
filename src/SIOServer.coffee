@@ -11,9 +11,7 @@ class SIOServer extends Base
 
   start: (fn = null) =>
     @log 'start'
-    @sio = io.listen @options.port, @options, (a, b, c) =>
-      console.log 'test', a, b, c
-    console.log 'bla'
+    @sio = io.listen @options.port, @options
 
     @sio.set    'log', false
     @sio.enable 'browser client mignification'
