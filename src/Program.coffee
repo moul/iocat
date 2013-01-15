@@ -4,7 +4,7 @@ program =    require 'commander'
 
 class Program
   constructor: (@options = {}) ->
-    @options.name ?= 'wscat'
+    @options.name ?= 'iocat'
     do @initCommander
     return @
 
