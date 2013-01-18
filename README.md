@@ -52,3 +52,10 @@ Socket.IO Client
 < Hello !
 > Hi !
 ```
+
+Install
+-------
+
+```bash
+npm install iocat -g
+```
