@@ -1,6 +1,6 @@
 {
   "name": "iocat",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "WebSocket netcat with Socket.io support",
   "main": "index.js",
   "bin": {
@@ -19,6 +19,8 @@
     "url": "https://github.com/moul/iocat"
   },
   "dependencies": {
+    "commander": "1",
+    "ws": "0.4"
   },
   "devDependencies": {
   },
