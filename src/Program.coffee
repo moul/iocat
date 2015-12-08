@@ -18,6 +18,7 @@ class Program
       .option('-p, --local-port <port>',                   'Specify local port for remote conntects',                 parseInt)
       .option('--socketio',                                'Use socket.io')
       .option('-k, --keep-listen',                         'Keep inbound sockets open for multiple connects')
+      .option('-e, --emit-key <key>',                      'Emit-key, default is "message"',                          "message")
       #.option('-U, --use-unix-domain-socket',              'Use UNIX domain socket')
       #.option('-X, --proxy-protocol {socks[45],connect}',  'proxy protocol')
       #.option('-b, --bind-interface <if>',                 'Bind socket to interface')                                #checkInterface
@@ -84,7 +85,7 @@ class Program
       @shell.send d
       do @shell.stdin.resume
 
-    @client.on 'message', (d) =>
+    @client.on @options.emitKey, (d) =>
       @shell.send d
 
     @client.on 'close', =>
@@ -116,7 +117,7 @@ class Program
       console.log 'server.on error'
       @shell.exit 0
 
-    @server.on 'message', (d) =>
+    @server.on @options.emitKey, (d) =>
       @shell.send d
 
     @server.on 'connection', =>

@@ -51,7 +51,7 @@ class WSServer extends Base
     @ws.on 'open',       @onClientOpen
     @ws.on 'close',      @onClientClose
     @ws.on 'error',      @onClientError
-    @ws.on 'message',    @onClientMessage
+    @ws.on @options.emitKey,     @onClientMessage
     @ws.on 'connect',    @onClientConnect
     @ready = true
     for data in @_queue
@@ -80,7 +80,7 @@ class WSServer extends Base
 
   onClientMessage: (msg) =>
     @log  'onClientMessage', msg
-    @emit 'message', msg
+    @emit @options.emitKey, msg
 
 module.exports =
   WSServer: WSServer

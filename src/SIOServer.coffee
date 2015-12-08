@@ -13,21 +13,20 @@ class SIOServer extends Base
     @log 'start'
     @sio = io.listen @options.port, @options
 
-    @sio.set    'log', false
-    @sio.enable 'browser client mignification'
-    @sio.enable 'browser client etag'
-    @sio.enable 'browser client gzip'
+    #@sio.set    'log', false
+    #@sio.enable 'browser client mignification'
+    #@sio.enable 'browser client etag'
+    #@sio.enable 'browser client gzip'
 
-    @sio.server.on 'listening', @onSIOServerListening
+    @sio.on 'listening', @onSIOServerListening
     #@sio.server.on 'request',
-    @sio.server.on 'connection', @onSIOServerSocketConnection
+    @sio.on 'connection', @onSIOServerSocketConnection
     #@sio.server.on 'close',
     #@sio.server.on 'checkContinue',
     #@sio.server.on 'connect',
     #@sio.server.on 'upgrade',
     #@sio.server.on 'clientError',
-    @sio.on 'error', => console.log 'error'
-    @sio.server.on 'error',       @onSIOServerError
+    @sio.on 'error',              @onSIOServerError
     @sio.sockets.on 'disconnect', @onSIOServerDisconnect
     @sio.sockets.on 'connection', @onSIOServerConnection
     @sio.sockets.on 'error',      @onSIOServerError
@@ -42,7 +41,7 @@ class SIOServer extends Base
       @_enqueue data
     else
       @log 'send', data
-      @ioc.send data
+      @ioc.emit @options.emitKey, data
       do fn if fn
 
   end: (fn = null) =>
@@ -74,7 +73,7 @@ class SIOServer extends Base
     @ioc.on 'open',       @onClientOpen
     @ioc.on 'close',      @onClientClose
     @ioc.on 'error',      @onClientError
-    @ioc.on 'message',    @onClientMessage
+    @ioc.on @options.emitKey,     @onClientMessage
     @ioc.on 'connect',    @onClientConnect
     @ioc.on 'disconnect', @onClientDisonnect
     @ready = true
@@ -109,7 +108,7 @@ class SIOServer extends Base
 
   onClientMessage: (msg) =>
     @log  'onClientMessage', msg
-    @emit 'message', msg
+    @emit @options.emitKey, msg
 
 module.exports =
   SIOServer: SIOServer

@@ -14,7 +14,7 @@ class WSClient extends Base
     @ws.on 'open',    @onOpen
     @ws.on 'close',   @onClose
     @ws.on 'error',   @onError
-    @ws.on 'message', @onMessage
+    @ws.on @options.emitKey,  @onMessage
     @ws.on 'connect', @onConnect
 
   # Methods
@@ -45,7 +45,7 @@ class WSClient extends Base
 
   onMessage: (msg) =>
     @log 'onMessage', msg
-    @emit 'message', msg
+    @emit @options.emitKey, msg
 
 module.exports =
   WSClient: WSClient

@@ -13,14 +13,13 @@ class SIOClient extends Base
     @io.on 'open',    @onOpen
     @io.on 'close',   @onClose
     @io.on 'error',   @onError
-    @io.on 'message', @onMessage
+    @io.on @options.emitKey, @onMessage
     @io.on 'connect', @onConnect
-
 
   # Methods
   send: (d) =>
     @log 'send', d
-    @io.send d
+    @io.emit @options.emitKey, d
 
   end: =>
     @log 'end'
@@ -45,7 +44,7 @@ class SIOClient extends Base
 
   onMessage: (msg) =>
     @log 'onMessage', msg
-    @emit 'message', msg
+    @emit @options.emitKey, msg
 
 module.exports =
   SIOClient: SIOClient
