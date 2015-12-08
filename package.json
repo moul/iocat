@@ -7,9 +7,9 @@
     "iocat": "./bin/iocat"
   },
   "directories": {
-    "lib":     "lib",
+    "lib": "lib",
     "example": "examples",
-    "test":    "test"
+    "test": "test"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,12 +19,11 @@
     "url": "https://github.com/moul/iocat"
   },
   "dependencies": {
-    "commander": "1",
-    "ws": "0.4",
-    "socket.io-client": "1.3.4"
+    "commander": "^2.9.0",
+    "socket.io-client": "^1.3.7",
+    "ws": "^0.8.1"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "keywords": [
     "WebSocket",
     "socket.io",
