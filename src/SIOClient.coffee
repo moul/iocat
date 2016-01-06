@@ -42,7 +42,7 @@ class SIOClient extends Base
     @log 'onError', err
     @emit 'error', err
 
-  onMessage: (msg) =>
+  onMessage: (msg...) =>
     @log 'onMessage', msg
     @emit @options.emitKey, msg
 
