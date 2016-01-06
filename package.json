@@ -1,6 +1,6 @@
 {
   "name": "iocat",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "WebSocket netcat with Socket.io support",
   "main": "index.js",
   "bin": {
