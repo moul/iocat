@@ -1,5 +1,11 @@
 # iocat
 
+[![Build Status](https://travis-ci.org/moul/iocat.svg?branch=master)](https://travis-ci.org/moul/iocat)
+[![Dependency Status](https://img.shields.io/david/moul/iocat.svg)](https://david-dm.org/moul/iocat)
+[![](https://img.shields.io/npm/dm/iocat.svg)](https://npmjs.org/package/iocat)
+[![](https://img.shields.io/npm/v/iocat.svg)](https://npmjs.org/package/iocat)
+[![](https://img.shields.io/npm/l/iocat.svg)](https://npmjs.org/package/iocat)
+
 **Socket.IO** and **WebSocket** **netcat-like** utility.
 
 ![](https://raw.githubusercontent.com/moul/iocat/master/assets/iocat.jpg)
