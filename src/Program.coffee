@@ -15,7 +15,7 @@ class Program
       .usage('[options] URL')
       .option('-v, --verbose',                             'verbose')
       .option('-l, --listen',                              'Start in listen mode, creating a server')
-      .option('-p, --local-port <port>',                   'Specify local port for remote conntects',                 parseInt)
+      .option('-p, --local-port <port>',                   'Specify local port for remote connections',                 parseInt)
       .option('--socketio',                                'Use socket.io')
       .option('-k, --keep-listen',                         'Keep inbound sockets open for multiple connects')
       .option('-e, --emit-key <key>',                      'Emit-key, default is "message"',                          "message")
