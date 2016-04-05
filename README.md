@@ -23,7 +23,7 @@ $ iocat --help
     -V, --version            output the version number
     -v, --verbose            verbose
     -l, --listen             Start in listen mode, creating a server
-    -p, --local-port <port>  Specify local port for remote conntects
+    -p, --local-port <port>  Specify local port for remote connections
     --socketio               Use socket.io
     -k, --keep-listen        Keep inbound sockets open for multiple connects
     -e, --emit-key <key>     Emit-key, default is "message"
