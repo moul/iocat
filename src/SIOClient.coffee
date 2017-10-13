@@ -6,10 +6,10 @@ class SIOClient extends Base
     return @
 
   start: =>
-    @log 'SIOClient: url->', @url.format()
+    @log 'SIOClient: url->', @url.endpoint(), ', path->', @url.path()
 
     href = @url.format()
-    @io = io.connect @url.format()
+    @io = io.connect @url.endpoint(), path: @url.path()
     @io.on 'open',    @onOpen
     @io.on 'close',   @onClose
     @io.on 'error',   @onError
