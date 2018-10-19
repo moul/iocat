@@ -4,7 +4,7 @@
 [![Dependency Status](https://img.shields.io/david/moul/iocat.svg)](https://david-dm.org/moul/iocat)
 [![](https://img.shields.io/npm/dm/iocat.svg)](https://npmjs.org/package/iocat)
 [![](https://img.shields.io/npm/v/iocat.svg)](https://npmjs.org/package/iocat)
-[![](https://img.shields.io/npm/l/iocat.svg)](https://npmjs.org/package/iocat)
+[![](https://img.shields.io/npm/l/iocat.svg)](https://npmjs.org/package/iocat) [![GuardRails badge](https://badges.production.guardrails.io/moul/iocat.svg)](https://www.guardrails.io)
 
 **Socket.IO** and **WebSocket** **netcat-like** utility.
 
