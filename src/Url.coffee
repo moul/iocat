@@ -8,6 +8,9 @@ class Url
 
   format: => Url.format @obj
 
+  endpoint: => @obj.protocol + "//" + @obj.hostname + ":" + @obj.port
+  path: => @obj.path
+
   @parse: (string) ->
     noprotocol = string.indexOf('://') is -1
     string = "ws://#{string}" if noprotocol
